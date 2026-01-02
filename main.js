@@ -236,3 +236,93 @@
   }, { passive: true });
 
 })();
+/* JSON-LD injector for SCHEDULE_CONFIG
+   Paste this at the end of main.js (after SCHEDULE_CONFIG and renderer code).
+*/
+(function injectJsonLdSafely() {
+  try {
+    // Wait until SCHEDULE_CONFIG is available
+    if (typeof window === 'undefined') return;
+    const waitForConfig = (resolve) => {
+      if (window.SCHEDULE_CONFIG && Array.isArray(window.SCHEDULE_CONFIG.spaces)) return resolve(window.SCHEDULE_CONFIG);
+      const maxWait = 3000; // ms
+      const start = Date.now();
+      const iv = setInterval(() => {
+        if (window.SCHEDULE_CONFIG && Array.isArray(window.SCHEDULE_CONFIG.spaces)) {
+          clearInterval(iv);
+          return resolve(window.SCHEDULE_CONFIG);
+        }
+        if (Date.now() - start > maxWait) {
+          clearInterval(iv);
+          return resolve(null);
+        }
+      }, 100);
+    };
+
+    waitForConfig((cfg) => {
+      if (!cfg) return; // config not available in time; silently exit
+
+      const tz = cfg.timezone || 'America/New_York';
+
+      // Helper: return a Date object for the next occurrence of hh:mm in EST
+      function nextOccurrenceEST(hhmm) {
+        const parts = (hhmm || '00:00').split(':').map(Number);
+        const now = new Date();
+        // Build a date string in EST by using toLocaleString conversion
+        const estNowStr = now.toLocaleString('en-US', { timeZone: tz });
+        const estNow = new Date(estNowStr);
+        const d = new Date(estNow);
+        d.setHours(parts[0] || 0, parts[1] || 0, 0, 0);
+        if (d <= estNow) d.setDate(d.getDate() + 1);
+        return d;
+      }
+
+      // Build JSON-LD events from foundersRow + spaces
+      const slots = (cfg.foundersRow || []).concat(cfg.spaces || []);
+      const events = slots.map(slot => {
+        const start = nextOccurrenceEST(slot.time);
+        const end = new Date(start.getTime() + Math.round((slot.duration || 1) * 60 * 60 * 1000));
+        // If duration has fractional hours (e.g., 1.5), add minutes accordingly
+        const frac = (slot.duration || 1) % 1;
+        if (frac) {
+          end.setMinutes(end.getMinutes() + Math.round(frac * 60));
+        }
+        // Convert to ISO strings (UTC) — crawlers accept ISO; timezone offset is preserved by using toLocaleString earlier
+        const startISO = start.toISOString();
+        const endISO = end.toISOString();
+
+        return {
+          "@type": "Event",
+          "name": `${slot.label || slot.id} — 789 Studios Space`,
+          "startDate": startISO,
+          "endDate": endISO,
+          "url": slot.xLink || "",
+          "eventStatus": "https://schema.org/EventScheduled",
+          "location": { "@type": "VirtualLocation", "url": slot.xLink || "" }
+        };
+      });
+
+      if (!events.length) return;
+
+      const jsonLd = {
+        "@context": "https://schema.org",
+        "@graph": events
+      };
+
+      // Inject script tag safely
+      try {
+        const s = document.createElement('script');
+        s.type = 'application/ld+json';
+        s.text = JSON.stringify(jsonLd);
+        if (document.head) document.head.appendChild(s);
+        else document.body.appendChild(s);
+      } catch (err) {
+        // If injection fails, do not throw — log for debugging
+        console.warn('JSON-LD injection failed:', err);
+      }
+    });
+  } catch (e) {
+    // Defensive: never break the widget if JSON-LD fails
+    console.warn('JSON-LD injector error:', e);
+  }
+})();
