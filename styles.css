@@ -1,94 +1,106 @@
-:root {
-  --bg-opacity: 0.18;
-  --bg-scale: 1.12;
-  --accent: #ffb84d;
-  --popup-bg: rgba(0,0,0,0.92);
+:root{
+  --stage-size: 3375px;
+  --stage-scale: 0.8;
+  --bic-height: 360px;
+  --zippo-height: 300px;
+  --gap-x: 8px;
+  --row-gap: 18px;
+  --stage-padding: 40px;
 }
 
-* { box-sizing: border-box; }
-html,body { height: 100%; margin: 0; background: #000; color: #fff; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
+/* Basic reset */
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#000;color:#fff;font-family:Inter,system-ui,Arial,Helvetica,sans-serif;display:flex;align-items:flex-start;justify-content:center;padding:24px}
 
-.schedule-root { position: relative; overflow: hidden; width: 100%; padding: 18px 12px; min-height: 360px; }
-.parallax-layer { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
-.parallax-layer img { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%) scale(var(--bg-scale)); opacity: var(--bg-opacity); height: 140%; width: auto; will-change: transform; filter: saturate(.95) contrast(.95); }
-
-.schedule-stage { position: relative; z-index: 2; }
-
-#schedule-container { display: flex; flex-direction: column; gap: 18px; }
-
-/* Row */
-.schedule-row { display:flex; gap:12px; align-items:center; justify-content:flex-start; flex-wrap:wrap; }
-
-/* Card */
-.card {
+/* Stage and background */
+.stage{
+  width: calc(var(--stage-size) * var(--stage-scale));
+  height: calc(var(--stage-size) * var(--stage-scale));
   position: relative;
-  width: 160px;
-  height: 220px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  overflow: hidden;
+  transform-origin: top center;
   background: transparent;
-  cursor: pointer;
-  transition: transform .18s ease, box-shadow .18s ease;
-  text-decoration: none;
-  color: inherit;
+  border-radius: 0;
 }
-.card:hover { transform: translateY(-6px); }
-
-/* Lighter image */
-.card img.lighter { max-width: 100%; max-height: 100%; display:block; pointer-events: none; }
-
-/* Flame video behind lighter */
-.card .flame-wrap {
+.parallax-bg{
   position: absolute;
   inset: 0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+  will-change: transform;
+}
+
+/* Rows container */
+.rows{
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: var(--row-gap);
+  align-items: center;
+  justify-content: flex-start;
+  height: 100%;
+  padding: var(--stage-padding);
+}
+
+/* Each row is a horizontal flex strip */
+.row{
+  display: flex;
+  gap: var(--gap-x);
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+  overflow: visible;
+}
+
+/* Card wrapper that holds video behind image */
+.card{
+  position: relative;
+  display: inline-block;
+  line-height: 0;
+  user-select: none;
+}
+
+/* Image sizing rules */
+.card img {
+  display: block;
+  height: var(--card-height, var(--bic-height));
+  width: auto;
+  max-width: none;
+  image-rendering: auto;
+  pointer-events: auto;
+  z-index: 1;
+  position: relative;
+}
+
+/* Video sits behind the image, same size */
+.card video {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  height: 100%;
+  width: auto;
+  object-fit: contain;
   z-index: 0;
   pointer-events: none;
 }
-.card video.flame {
-  width: 60%;
-  height: auto;
-  opacity: 0.95;
-  mix-blend-mode: screen;
-  display: none;
-}
 
-/* Foreground content sits above flame */
-.card .fg { position: relative; z-index: 2; display:flex; align-items:center; justify-content:center; }
-
-/* Popup summary */
-.popup {
+/* Popups (ticket summaries) */
+#popups .popup {
   position: absolute;
-  bottom: calc(100% + 8px);
-  left: 50%;
-  transform: translateX(-50%);
-  width: 260px;
-  background: var(--popup-bg);
-  border-radius: 8px;
-  padding: 8px;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.6);
-  display: none;
-  z-index: 6;
-}
-.card.show-popup .popup { display: block; }
-
-/* Popup image */
-.popup img { width: 100%; height: auto; display:block; border-radius: 6px; }
-
-/* Small label under card */
-.card-label { position: absolute; bottom: 8px; left: 8px; font-size: 12px; color: #fff; z-index: 3; text-shadow: 0 2px 6px rgba(0,0,0,0.8); }
-
-/* Responsive */
-@media (max-width: 720px) {
-  .card { width: 120px; height: 170px; }
-  .popup { width: 220px; }
+  z-index: 10;
+  pointer-events: auto;
+  transform-origin: top left;
+  background: transparent;
 }
 
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .card { transition: none; }
-  .parallax-layer img { transition: none; will-change: auto; }
+/* Responsive tweaks */
+@media (max-width: 1400px){
+  :root{ --stage-scale: 0.6; --bic-height: 300px; --zippo-height: 260px; }
+}
+@media (max-width: 900px){
+  :root{ --stage-scale: 0.45; --bic-height: 220px; --zippo-height: 180px; }
+  .rows{ padding: 18px; }
 }

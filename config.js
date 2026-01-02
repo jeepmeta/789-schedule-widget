@@ -13,7 +13,6 @@ const SCHEDULE_CONFIG = {
     speed: 0.02
   },
 
-  // Founders row (locked Zippo trio at 19:00, 20:00, 21:00)
   foundersRow: [
     {
       id: "Vibes",
@@ -56,170 +55,27 @@ const SCHEDULE_CONFIG = {
     }
   ],
 
-  // All other spaces (named entries). Times are EST. Durations can be fractional.
   spaces: [
-    {
-      id: "Grami",
-      label: "Grami",
-      time: "06:00",
-      duration: 1,
-      type: "bic",
-      bicImg: "https://jeepmeta.github.io/789-schedule-assets/bics/Grami.png",
-      summaryImg: "https://jeepmeta.github.io/789-schedule-assets/summaries/Grami-summary.png",
-      flameVideo: "https://jeepmeta.github.io/789-schedule-assets/flames/bic-flame.mov",
-      xLink: "https://x.com/gramixmeta",
-      overlapPriority: 2
-    },
-    {
-      id: "Leah",
-      label: "Leah",
-      time: "06:00",
-      duration: 1,
-      type: "bic",
-      bicImg: "https://jeepmeta.github.io/789-schedule-assets/bics/Leah.png",
-      summaryImg: "https://jeepmeta.github.io/789-schedule-assets/summaries/Leah-summary.png",
-      flameVideo: "https://jeepmeta.github.io/789-schedule-assets/flames/bic-flame.mov",
-      xLink: "https://x.com/leahbluewater",
-      overlapPriority: 1
-    },
-    {
-      id: "Shibo",
-      label: "Shibo",
-      time: "10:00",
-      duration: 2,
-      type: "bic",
-      bicImg: "https://jeepmeta.github.io/789-schedule-assets/bics/Shibo.png",
-      summaryImg: "https://jeepmeta.github.io/789-schedule-assets/summaries/Shibo-summary.png",
-      flameVideo: "https://jeepmeta.github.io/789-schedule-assets/flames/bic-flame.mov",
-      xLink: "https://x.com/godsburnt",
-      overlapPriority: 1
-    },
-    {
-      id: "Paws",
-      label: "Paws",
-      time: "13:00",
-      duration: 2,
-      type: "bic",
-      bicImg: "https://jeepmeta.github.io/789-schedule-assets/bics/Paws.png",
-      summaryImg: "https://jeepmeta.github.io/789-schedule-assets/summaries/Paws-summary.png",
-      flameVideo: "https://jeepmeta.github.io/789-schedule-assets/flames/bic-flame.mov",
-      xLink: "https://x.com/pawsmeta",
-      overlapPriority: 2
-    },
-    {
-      id: "Shield",
-      label: "Shield",
-      time: "14:00",
-      duration: 1,
-      type: "bic",
-      bicImg: "https://jeepmeta.github.io/789-schedule-assets/bics/Shield.png",
-      summaryImg: "https://jeepmeta.github.io/789-schedule-assets/summaries/Shield-summary.png",
-      flameVideo: "https://jeepmeta.github.io/789-schedule-assets/flames/bic-flame.mov",
-      xLink: "https://x.com/shieldmetax",
-      overlapPriority: 1
-    },
-    {
-      id: "Anthem",
-      label: "Anthem",
-      time: "15:00",
-      duration: 1,
-      type: "bic",
-      bicImg: "https://jeepmeta.github.io/789-schedule-assets/bics/Anthem.png",
-      summaryImg: "https://jeepmeta.github.io/789-schedule-assets/summaries/Anthem-summary.png",
-      flameVideo: "https://jeepmeta.github.io/789-schedule-assets/flames/bic-flame.mov",
-      xLink: "https://x.com/anthemhayek",
-      overlapPriority: 1
-    },
-    {
-      id: "Bark",
-      label: "Bark",
-      time: "17:00",
-      duration: 2,
-      type: "bic",
-      bicImg: "https://jeepmeta.github.io/789-schedule-assets/bics/Bark.png",
-      summaryImg: "https://jeepmeta.github.io/789-schedule-assets/summaries/Bark-summary.png",
-      flameVideo: "https://jeepmeta.github.io/789-schedule-assets/flames/bic-flame.mov",
-      xLink: "https://x.com/barkmeta",
-      overlapPriority: 1
-    },
-    {
-      id: "Sauce",
-      label: "Sauce",
-      time: "22:00",
-      duration: 1,
-      type: "bic",
-      bicImg: "https://jeepmeta.github.io/789-schedule-assets/bics/Sauce.png",
-      summaryImg: "https://jeepmeta.github.io/789-schedule-assets/summaries/Sauce-summary.png",
-      flameVideo: "https://jeepmeta.github.io/789-schedule-assets/flames/bic-flame.mov",
-      xLink: "https://x.com/crypto_sauce",
-      overlapPriority: 1
-    },
-    {
-      id: "Dream",
-      label: "Dream",
-      time: "23:00",
-      duration: 1.5,
-      type: "bic",
-      bicImg: "https://jeepmeta.github.io/789-schedule-assets/bics/Dream.png",
-      summaryImg: "https://jeepmeta.github.io/789-schedule-assets/summaries/Dream-summary.png",
-      flameVideo: "https://jeepmeta.github.io/789-schedule-assets/flames/bic-flame.mov",
-      xLink: "https://x.com/dreammetax",
-      overlapPriority: 1
-    },
-    {
-      id: "Grow",
-      label: "Grow",
-      time: "00:00",
-      duration: 1,
-      type: "bic",
-      bicImg: "https://jeepmeta.github.io/789-schedule-assets/bics/Grow.png",
-      summaryImg: "https://jeepmeta.github.io/789-schedule-assets/summaries/Grow-summary.png",
-      flameVideo: "https://jeepmeta.github.io/789-schedule-assets/flames/bic-flame.mov",
-      xLink: "https://x.com/growxmeta",
-      overlapPriority: 1
-    },
-    {
-      id: "Neuro",
-      label: "Neuro",
-      time: "01:00",
-      duration: 1,
-      type: "bic",
-      bicImg: "https://jeepmeta.github.io/789-schedule-assets/bics/Neuro.png",
-      summaryImg: "https://jeepmeta.github.io/789-schedule-assets/summaries/Neuro-summary.png",
-      flameVideo: "https://jeepmeta.github.io/789-schedule-assets/flames/bic-flame.mov",
-      xLink: "https://x.com/neurometax",
-      overlapPriority: 1
-    },
-    {
-      id: "Artsy",
-      label: "Artsy",
-      time: "02:00",
-      duration: 1,
-      type: "bic",
-      bicImg: "https://jeepmeta.github.io/789-schedule-assets/bics/Artsy.png",
-      summaryImg: "https://jeepmeta.github.io/789-schedule-assets/summaries/Artsy-summary.png",
-      flameVideo: "https://jeepmeta.github.io/789-schedule-assets/flames/bic-flame.mov",
-      xLink: "https://x.com/artsymeta",
-      overlapPriority: 1
-    },
-    {
-      id: "Truck",
-      label: "Truck",
-      time: "03:00",
-      duration: 1,
-      type: "bic",
-      bicImg: "https://jeepmeta.github.io/789-schedule-assets/bics/Truck.png",
-      summaryImg: "https://jeepmeta.github.io/789-schedule-assets/summaries/Truck-summary.png",
-      flameVideo: "https://jeepmeta.github.io/789-schedule-assets/flames/bic-flame.mov",
-      xLink: "https://x.com/truckmeta",
-      overlapPriority: 1
-    }
+    { id: "Grami", label: "Grami", time: "06:00", duration: 1, type: "bic", bicImg: "https://jeepmeta.github.io/789-schedule-assets/bics/Grami.png", summaryImg: "https://jeepmeta.github.io/789-schedule-assets/summaries/Grami-summary.png", flameVideo: "https://jeepmeta.github.io/789-schedule-assets/flames/bic-flame.mov", xLink: "https://x.com/gramixmeta", overlapPriority: 2 },
+    { id: "Leah", label: "Leah", time: "06:00", duration: 1, type: "bic", bicImg: "https://jeepmeta.github.io/789-schedule-assets/bics/Leah.png", summaryImg: "https://jeepmeta.github.io/789-schedule-assets/summaries/Leah-summary.png", flameVideo: "https://jeepmeta.github.io/789-schedule-assets/flames/bic-flame.mov", xLink: "https://x.com/leahbluewater", overlapPriority: 1 },
+    { id: "Shibo", label: "Shibo", time: "10:00", duration: 2, type: "bic", bicImg: "https://jeepmeta.github.io/789-schedule-assets/bics/Shibo.png", summaryImg: "https://jeepmeta.github.io/789-schedule-assets/summaries/Shibo-summary.png", flameVideo: "https://jeepmeta.github.io/789-schedule-assets/flames/bic-flame.mov", xLink: "https://x.com/godsburnt", overlapPriority: 1 },
+    { id: "Paws", label: "Paws", time: "13:00", duration: 2, type: "bic", bicImg: "https://jeepmeta.github.io/789-schedule-assets/bics/Paws.png", summaryImg: "https://jeepmeta.github.io/789-schedule-assets/summaries/Paws-summary.png", flameVideo: "https://jeepmeta.github.io/789-schedule-assets/flames/bic-flame.mov", xLink: "https://x.com/pawsmeta", overlapPriority: 2 },
+    { id: "Shield", label: "Shield", time: "14:00", duration: 1, type: "bic", bicImg: "https://jeepmeta.github.io/789-schedule-assets/bics/Shield.png", summaryImg: "https://jeepmeta.github.io/789-schedule-assets/summaries/Shield-summary.png", flameVideo: "https://jeepmeta.github.io/789-schedule-assets/flames/bic-flame.mov", xLink: "https://x.com/shieldmetax", overlapPriority: 1 },
+    { id: "Anthem", label: "Anthem", time: "15:00", duration: 1, type: "bic", bicImg: "https://jeepmeta.github.io/789-schedule-assets/bics/Anthem.png", summaryImg: "https://jeepmeta.github.io/789-schedule-assets/summaries/Anthem-summary.png", flameVideo: "https://jeepmeta.github.io/789-schedule-assets/flames/bic-flame.mov", xLink: "https://x.com/anthemhayek", overlapPriority: 1 },
+    { id: "Bark", label: "Bark", time: "17:00", duration: 2, type: "bic", bicImg: "https://jeepmeta.github.io/789-schedule-assets/bics/Bark.png", summaryImg: "https://jeepmeta.github.io/789-schedule-assets/summaries/Bark-summary.png", flameVideo: "https://jeepmeta.github.io/789-schedule-assets/flames/bic-flame.mov", xLink: "https://x.com/barkmeta", overlapPriority: 1 },
+    { id: "Sauce", label: "Sauce", time: "22:00", duration: 1, type: "bic", bicImg: "https://jeepmeta.github.io/789-schedule-assets/bics/Sauce.png", summaryImg: "https://jeepmeta.github.io/789-schedule-assets/summaries/Sauce-summary.png", flameVideo: "https://jeepmeta.github.io/789-schedule-assets/flames/bic-flame.mov", xLink: "https://x.com/crypto_sauce", overlapPriority: 1 },
+    { id: "Dream", label: "Dream", time: "23:00", duration: 1.5, type: "bic", bicImg: "https://jeepmeta.github.io/789-schedule-assets/bics/Dream.png", summaryImg: "https://jeepmeta.github.io/789-schedule-assets/summaries/Dream-summary.png", flameVideo: "https://jeepmeta.github.io/789-schedule-assets/flames/bic-flame.mov", xLink: "https://x.com/dreammetax", overlapPriority: 1 },
+    { id: "Grow", label: "Grow", time: "00:00", duration: 1, type: "bic", bicImg: "https://jeepmeta.github.io/789-schedule-assets/bics/Grow.png", summaryImg: "https://jeepmeta.github.io/789-schedule-assets/summaries/Grow-summary.png", flameVideo: "https://jeepmeta.github.io/789-schedule-assets/flames/bic-flame.mov", xLink: "https://x.com/growxmeta", overlapPriority: 1 },
+    { id: "Neuro", label: "Neuro", time: "01:00", duration: 1, type: "bic", bicImg: "https://jeepmeta.github.io/789-schedule-assets/bics/Neuro.png", summaryImg: "https://jeepmeta.github.io/789-schedule-assets/summaries/Neuro-summary.png", flameVideo: "https://jeepmeta.github.io/789-schedule-assets/flames/bic-flame.mov", xLink: "https://x.com/neurometax", overlapPriority: 1 },
+    { id: "Artsy", label: "Artsy", time: "02:00", duration: 1, type: "bic", bicImg: "https://jeepmeta.github.io/789-schedule-assets/bics/Artsy.png", summaryImg: "https://jeepmeta.github.io/789-schedule-assets/summaries/Artsy-summary.png", flameVideo: "https://jeepmeta.github.io/789-schedule-assets/flames/bic-flame.mov", xLink: "https://x.com/artsymeta", overlapPriority: 1 },
+    { id: "Truck", label: "Truck", time: "03:00", duration: 1, type: "bic", bicImg: "https://jeepmeta.github.io/789-schedule-assets/bics/Truck.png", summaryImg: "https://jeepmeta.github.io/789-schedule-assets/summaries/Truck-summary.png", flameVideo: "https://jeepmeta.github.io/789-schedule-assets/flames/bic-flame.mov", xLink: "https://x.com/truckmeta", overlapPriority: 1 }
   ]
 };
 
-/* Export for environments that support modules (optional) */
+/* Expose globally so main.js can read it reliably */
+window.SCHEDULE_CONFIG = SCHEDULE_CONFIG;
+
+/* Optional CommonJS export for local Node checks */
 if (typeof module !== "undefined") {
   module.exports = { SCHEDULE_CONFIG };
 }
-
-window.SCHEDULE_CONFIG = SCHEDULE_CONFIG;

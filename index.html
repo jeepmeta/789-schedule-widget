@@ -1,24 +1,20 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>789 Schedule Widget</title>
+  <meta charset="utf-8">
+  <title>789 Schedule</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div id="schedule-root" class="schedule-root" aria-live="polite">
-    <div class="parallax-layer" aria-hidden="true">
-      <img id="parallax-img" src="" alt="">
-    </div>
+  <main id="schedule-root" aria-live="polite">
+    <div id="schedule-container"></div>
+  </main>
 
-    <div class="schedule-stage">
-      <div id="schedule-container"></div>
-    </div>
-  </div>
-
-  <!-- Root config must be loaded before main.js -->
+  <!-- Load configuration first -->
   <script src="config.js"></script>
+
+  <!-- Main renderer -->
   <script src="main.js"></script>
 </body>
 </html>
