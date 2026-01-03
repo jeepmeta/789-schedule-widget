@@ -1,146 +1,193 @@
-:root{
-  --stage-size: 3375px;
-  --stage-scale: 0.8;
-  --stage-render-width: calc(var(--stage-size) * var(--stage-scale));
-  --founders-offset-pct: 3%;
-  --bic-height: 360px;
-  --zippo-height: 300px;
-  --gap-x: 8px;
-  --row-gap: 18px;
-  --stage-padding: 40px;
+/* Global reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-/* Basic reset */
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:#000;color:#fff;font-family:Inter,system-ui,Arial,Helvetica,sans-serif;display:flex;align-items:flex-start;justify-content:center;padding:24px}
-
-/* Stage and background - responsive */
-.stage{
-  width: min(var(--stage-render-width), 100%);
-  --scale-factor: calc(var(--stage-render-width) / var(--stage-size));
-  height: calc(var(--stage-size) * (min(var(--stage-render-width), 100%) / var(--stage-size)));
-  position: relative;
-  overflow: hidden;
-  transform-origin: top center;
-  background: transparent;
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #000;
+  color: #fff;
 }
 
-/* Parallax background tuned to avoid cropping and allow movement */
-.parallax-bg{
-  position: absolute;
+/* Background with parallax */
+#background {
+  position: fixed;
   inset: 0;
-  background-size: calc(100% + 8vw) calc(100% + 8vh);
-  background-position: center center;
-  z-index: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   will-change: transform;
-  transition: transform 220ms cubic-bezier(.22,.9,.35,1);
+  z-index: 0;
 }
 
-/* Rows container */
-.rows{
+/* Main layout */
+#schedule-root {
   position: relative;
-  z-index: 2;
+  z-index: 1;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  gap: var(--row-gap);
-  align-items: center;
-  justify-content: flex-start;
-  height: 100%;
-  padding: calc(var(--stage-padding) + 12px);
-  box-sizing: border-box;
-}
-
-/* Each row is a horizontal flex strip */
-.row{
-  display: flex;
-  gap: var(--gap-x);
-  align-items: flex-start;
   justify-content: center;
-  width: 100%;
-  overflow: visible;
+
+  /* ADJUST ROW SPACING HERE */
+  gap: 3vh;
+
+  padding: 5vh 4vw;
 }
 
-/* Founders row offset: use percentage so it scales with stage width */
-.row-founders{
-  justify-content: flex-start;
-  padding-left: var(--founders-offset-pct);
-}
+/* Rows of lighters */
+.lighter-row {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
 
-/* Card wrapper that holds video behind image */
-.card{
-  position: relative;
-  display: inline-block;
-  line-height: 0;
-  user-select: none;
-}
+  /* ADJUST HORIZONTAL SPACING HERE */
+  gap: 2vw;
 
-/* Image sizing rules - scale by computed scale factor */
-.card img {
-  display: block;
-  height: calc(var(--card-height, var(--bic-height)) * var(--scale-factor));
-  width: auto;
-  max-width: none;
-  image-rendering: auto;
   pointer-events: auto;
-  z-index: 1;
-  position: relative;
 }
 
-/* Video sits behind the image, same size */
-.card video {
+/* Default lighter size (BICs) */
+.lighter {
+  position: relative;
+  width: 96px;
+  height: 256px;
+  cursor: pointer;
+  transition: transform 0.2s ease, filter 0.2s ease;
+  transform-origin: center bottom;
+}
+
+/* Hover lift */
+.lighter:hover {
+  transform: translateY(-6px);
+  filter: brightness(1.1);
+}
+
+/* ZIPPO row override — 1080×1080 square scaling */
+#lighter-row-zippo .lighter {
+  width: 240px;     /* adjust freely */
+  height: 240px;    /* perfect square */
+}
+
+/* ZIPPO row left/right positioning */
+#lighter-row-zippo {
+  /* adjust this to shift the entire row */
+  transform: translateX(-56px);
+}
+
+/* Ensure flame + image scale with ZIPPO size */
+#lighter-row-zippo .lighter video.flame,
+#lighter-row-zippo .lighter img.lighter-image {
+  width: 100%;
+  height: 100%;
+}
+
+/* Flame video behind lighter image */
+.lighter video.flame {
   position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  height: calc(var(--card-height, var(--bic-height)) * var(--scale-factor));
-  width: auto;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
   z-index: 0;
   pointer-events: none;
 }
 
-/* Popups container */
-#popups{
+/* Lighter image on top */
+.lighter img.lighter-image {
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  z-index: 1;
   pointer-events: none;
+}
+
+/* LIVE STATE — wobble + glow */
+.lighter.live {
+  animation: lighter-wobble 3s ease-in-out infinite;
+  filter: drop-shadow(0 0 6px rgba(255, 200, 120, 0.45));
+}
+
+/* Subtle wobble animation */
+@keyframes lighter-wobble {
+  0%   { transform: translateY(0) rotate(0deg); }
+  25%  { transform: translateY(-1px) rotate(0.4deg); }
+  50%  { transform: translateY(0) rotate(0deg); }
+  75%  { transform: translateY(-1px) rotate(-0.4deg); }
+  100% { transform: translateY(0) rotate(0deg); }
+}
+
+/* Summary popup overlay */
+.summary-overlay {
+  position: fixed;
+  inset: 0;
   z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at center, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.95));
+  backdrop-filter: blur(4px);
+  transition: opacity 0.35s ease;
 }
 
-/* Popup styling and transitions */
-#popups .popup {
-  position: absolute;
-  pointer-events: auto;
-  z-index: 11;
-  transform-origin: top left;
-  background: rgba(0,0,0,0.06);
-  border-radius: 8px;
-  overflow: visible;
-  box-shadow: 0 8px 28px rgba(0,0,0,0.45);
-  backdrop-filter: blur(6px) saturate(1.05);
-  -webkit-backdrop-filter: blur(6px) saturate(1.05);
-  padding: 8px;
-  transition: opacity 180ms ease, transform 220ms cubic-bezier(.22,.9,.35,1);
+/* Hidden state */
+.hidden {
   opacity: 0;
-  transform: translateY(8px) scale(0.98);
-}
-
-#popups .popup img {
-  display: block;
-  max-width: 640px;
-  width: auto;
-  height: auto;
-  border-radius: 6px;
   pointer-events: none;
-  user-select: none;
 }
 
-/* Responsive tweaks */
-@media (max-width: 1400px){
-  :root{ --stage-scale: 0.6; --founders-offset-pct: 2.5%; }
+/* Popup itself */
+.summary-popup {
+  position: relative;
+  max-width: 80vw;
+  max-height: 80vh;
+  aspect-ratio: 4 / 3;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  opacity: 0;
+  transform: scale(0.95);
 }
-@media (max-width: 900px){
-  :root{ --stage-scale: 0.45; --founders-offset-pct: 1.5%; }
-  .rows{ padding: 18px; }
-  #popups .popup { max-width: 80%; }
+
+/* Visible popup state */
+.summary-overlay:not(.hidden) .summary-popup {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Mobile adjustments */
+@media (max-width: 600px) {
+  .lighter {
+    width: 72px;
+    height: 192px;
+  }
+
+  #lighter-row-zippo .lighter {
+    width: 200px;
+    height: 200px;
+  }
+
+  .summary-popup {
+    max-width: 90vw;
+    max-height: 70vh;
+  }
+
+  #schedule-root {
+    gap: 2.5vh;
+    padding: 4vh 2vw;
+  }
 }

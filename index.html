@@ -1,20 +1,27 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>789 Schedule</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <title>789 Studios Schedule</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <main id="schedule-root" aria-live="polite">
-    <div id="schedule-container"></div>
+  <div id="background"></div>
+
+  <main id="schedule-root">
+    <section id="lighter-row-day" class="lighter-row" aria-label="Daytime hosts"></section>
+    <section id="lighter-row-zippo" class="lighter-row" aria-label="Zippo evening hosts"></section>
+    <section id="lighter-row-night" class="lighter-row" aria-label="Night hosts"></section>
   </main>
 
-  <!-- Load configuration first -->
-  <script src="config.js"></script>
+  <div id="summary-overlay" class="summary-overlay hidden">
+    <div id="summary-popup" class="summary-popup">
+      <!-- summary image will be applied as background-image -->
+    </div>
+  </div>
 
-  <!-- Main renderer -->
-  <script src="main.js"></script>
+  <script type="module" src="config.js"></script>
+  <script type="module" src="main.js"></script>
 </body>
 </html>

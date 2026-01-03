@@ -1,221 +1,216 @@
-/* config.js - Root schedule configuration for 789 Schedule Widget
-   Replace this file in your project. Edit only this file to update times,
-   durations, images, and X links. Times are in EST (America/New_York).
-*/
+// config.js
 
-const SCHEDULE_CONFIG = {
-  timezone: "America/New_York",
-  refreshIntervalSec: 30,
+// Base URL for all assets (GitHub Pages)
+export const ASSET_BASE_URL = 'https://jeepmeta.github.io/789-schedule-assets';
 
-  background: {
-    url: "https://jeepmeta.github.io/789-schedule-assets/backgrounds/background.png",
-    opacity: 0.18,
-    scale: 1.12,
-    speed: 0.02
+// Single background image for the whole widget
+export const BACKGROUND_IMAGE = `${ASSET_BASE_URL}/backgrounds/background.png`;
+
+// Global flame video sources
+// Widget code should try sources in order for best compatibility
+export const FLAMES = {
+  bic: {
+    primary: `${ASSET_BASE_URL}/flames/bic-flame.webm`,
+    fallback: `${ASSET_BASE_URL}/flames/bic-flame.mov`,
+    hevc: `${ASSET_BASE_URL}/flames/bic-flame-hevc.mov`,
   },
-
-  // Shared flame sources (webm primary, hevc/mov fallback for Safari)
-  flameSources: {
-    bic: {
-      webm: "https://jeepmeta.github.io/789-schedule-assets/flames/bic-flame.webm",
-      hevc: "https://jeepmeta.github.io/789-schedule-assets/flames/bic-flame-hevc.mov"
-    },
-    zippo: {
-      webm: "https://jeepmeta.github.io/789-schedule-assets/flames/zippo-flame.webm",
-      hevc: "https://jeepmeta.github.io/789-schedule-assets/flames/zippo-flame-hevc.mov"
-    }
+  zippo: {
+    primary: `${ASSET_BASE_URL}/flames/zippo-flame.webm`,
+    fallback: `${ASSET_BASE_URL}/flames/zippo-flame.mov`,
+    hevc: `${ASSET_BASE_URL}/flames/zippo-flame-hevc.mov`,
   },
-
-  foundersRow: [
-    {
-      id: "Vibes",
-      label: "Vibes",
-      time: "19:00",
-      duration: 1,
-      type: "zippo",
-      closedImg: "https://jeepmeta.github.io/789-schedule-assets/zippos/Vibes-closed.png",
-      openImg: "https://jeepmeta.github.io/789-schedule-assets/zippos/Vibes-open.png",
-      summaryImg: "https://jeepmeta.github.io/789-schedule-assets/summaries/Vibes-summary.png",
-      xLink: "https://x.com/vibesmetax",
-      overlapPriority: 2
-    },
-    {
-      id: "Wooki",
-      label: "Wooki",
-      time: "20:00",
-      duration: 1,
-      type: "zippo",
-      closedImg: "https://jeepmeta.github.io/789-schedule-assets/zippos/Wooki-closed.png",
-      openImg: "https://jeepmeta.github.io/789-schedule-assets/zippos/Wooki-open.png",
-      summaryImg: "https://jeepmeta.github.io/789-schedule-assets/summaries/Wooki-summary.png",
-      xLink: "https://x.com/wookimeta",
-      overlapPriority: 2
-    },
-    {
-      id: "Gator",
-      label: "Gator",
-      time: "21:00",
-      duration: 1,
-      type: "zippo",
-      closedImg: "https://jeepmeta.github.io/789-schedule-assets/zippos/Gator-closed.png",
-      openImg: "https://jeepmeta.github.io/789-schedule-assets/zippos/Gator-open.png",
-      summaryImg: "https://jeepmeta.github.io/789-schedule-assets/summaries/Gator-summary.png",
-      xLink: "https://x.com/gatormetax",
-      overlapPriority: 2
-    }
-  ],
-
-  spaces: [
-    {
-      id: "Grami",
-      label: "Grami",
-      time: "06:00",
-      duration: 1,
-      type: "bic",
-      bicImg: "https://jeepmeta.github.io/789-schedule-assets/bics/Grami.png",
-      summaryImg: "https://jeepmeta.github.io/789-schedule-assets/summaries/Grami-summary.png",
-      xLink: "https://x.com/gramixmeta",
-      overlapPriority: 2
-    },
-    {
-      id: "Leah",
-      label: "Leah",
-      time: "06:00",
-      duration: 1,
-      type: "bic",
-      bicImg: "https://jeepmeta.github.io/789-schedule-assets/bics/Leah.png",
-      summaryImg: "https://jeepmeta.github.io/789-schedule-assets/summaries/Leah-summary.png",
-      xLink: "https://x.com/leahbluewater",
-      overlapPriority: 1
-    },
-    {
-      id: "Shibo",
-      label: "Shibo",
-      time: "10:00",
-      duration: 2,
-      type: "bic",
-      bicImg: "https://jeepmeta.github.io/789-schedule-assets/bics/Shibo.png",
-      summaryImg: "https://jeepmeta.github.io/789-schedule-assets/summaries/Shibo-summary.png",
-      xLink: "https://x.com/godsburnt",
-      overlapPriority: 1
-    },
-    {
-      id: "Paws",
-      label: "Paws",
-      time: "13:00",
-      duration: 2,
-      type: "bic",
-      bicImg: "https://jeepmeta.github.io/789-schedule-assets/bics/Paws.png",
-      summaryImg: "https://jeepmeta.github.io/789-schedule-assets/summaries/Paws-summary.png",
-      xLink: "https://x.com/pawsmeta",
-      overlapPriority: 2
-    },
-    {
-      id: "Shield",
-      label: "Shield",
-      time: "14:00",
-      duration: 1,
-      type: "bic",
-      bicImg: "https://jeepmeta.github.io/789-schedule-assets/bics/Shield.png",
-      summaryImg: "https://jeepmeta.github.io/789-schedule-assets/summaries/Shield-summary.png",
-      xLink: "https://x.com/shieldmetax",
-      overlapPriority: 1
-    },
-    {
-      id: "Anthem",
-      label: "Anthem",
-      time: "15:00",
-      duration: 1,
-      type: "bic",
-      bicImg: "https://jeepmeta.github.io/789-schedule-assets/bics/Anthem.png",
-      summaryImg: "https://jeepmeta.github.io/789-schedule-assets/summaries/Anthem-summary.png",
-      xLink: "https://x.com/anthemhayek",
-      overlapPriority: 1
-    },
-    {
-      id: "Bark",
-      label: "Bark",
-      time: "17:00",
-      duration: 2,
-      type: "bic",
-      bicImg: "https://jeepmeta.github.io/789-schedule-assets/bics/Bark.png",
-      summaryImg: "https://jeepmeta.github.io/789-schedule-assets/summaries/Bark-summary.png",
-      xLink: "https://x.com/barkmeta",
-      overlapPriority: 1
-    },
-    {
-      id: "Sauce",
-      label: "Sauce",
-      time: "22:00",
-      duration: 1,
-      type: "bic",
-      bicImg: "https://jeepmeta.github.io/789-schedule-assets/bics/Sauce.png",
-      summaryImg: "https://jeepmeta.github.io/789-schedule-assets/summaries/Sauce-summary.png",
-      xLink: "https://x.com/crypto_sauce",
-      overlapPriority: 1
-    },
-    {
-      id: "Dream",
-      label: "Dream",
-      time: "23:00",
-      duration: 1.5,
-      type: "bic",
-      bicImg: "https://jeepmeta.github.io/789-schedule-assets/bics/Dream.png",
-      summaryImg: "https://jeepmeta.github.io/789-schedule-assets/summaries/Dream-summary.png",
-      xLink: "https://x.com/dreammetax",
-      overlapPriority: 1
-    },
-    {
-      id: "Grow",
-      label: "Grow",
-      time: "00:00",
-      duration: 1,
-      type: "bic",
-      bicImg: "https://jeepmeta.github.io/789-schedule-assets/bics/Grow.png",
-      summaryImg: "https://jeepmeta.github.io/789-schedule-assets/summaries/Grow-summary.png",
-      xLink: "https://x.com/growxmeta",
-      overlapPriority: 1
-    },
-    {
-      id: "Neuro",
-      label: "Neuro",
-      time: "01:00",
-      duration: 1,
-      type: "bic",
-      bicImg: "https://jeepmeta.github.io/789-schedule-assets/bics/Neuro.png",
-      summaryImg: "https://jeepmeta.github.io/789-schedule-assets/summaries/Neuro-summary.png",
-      xLink: "https://x.com/neurometax",
-      overlapPriority: 1
-    },
-    {
-      id: "Artsy",
-      label: "Artsy",
-      time: "02:00",
-      duration: 1,
-      type: "bic",
-      bicImg: "https://jeepmeta.github.io/789-schedule-assets/bics/Artsy.png",
-      summaryImg: "https://jeepmeta.github.io/789-schedule-assets/summaries/Artsy-summary.png",
-      xLink: "https://x.com/artsymeta",
-      overlapPriority: 1
-    },
-    {
-      id: "Truck",
-      label: "Truck",
-      time: "03:00",
-      duration: 1,
-      type: "bic",
-      bicImg: "https://jeepmeta.github.io/789-schedule-assets/bics/Truck.png",
-      summaryImg: "https://jeepmeta.github.io/789-schedule-assets/summaries/Truck-summary.png",
-      xLink: "https://x.com/truckmeta",
-      overlapPriority: 1
-    }
-  ]
 };
 
-/* Expose globally so main.js can read it reliably */
-window.SCHEDULE_CONFIG = SCHEDULE_CONFIG;
+// Timezone for schedule
+export const TIMEZONE = 'America/New_York'; // EST/EDT
 
-/* Optional CommonJS export for local Node checks */
-if (typeof module !== "undefined") {
-  module.exports = { SCHEDULE_CONFIG };
-}
+// Schedule + assets
+export const HOSTS = [
+  {
+    id: 'grami',
+    name: 'Grami',
+    xHandle: '@gramixmeta',
+    xUrl: 'https://x.com/gramixmeta',
+    type: 'bic',
+    row: 'day',
+    image: `${ASSET_BASE_URL}/bics/Grami.png`,
+    summaryImage: `${ASSET_BASE_URL}/summaries/Grami-summary.png`,
+    schedule: [{ start: '06:00', end: '07:00' }],
+  },
+  {
+    id: 'leah',
+    name: 'Leah',
+    xHandle: '@leahbluewater',
+    xUrl: 'https://x.com/leahbluewater',
+    type: 'bic',
+    row: 'day',
+    image: `${ASSET_BASE_URL}/bics/Leah.png`,
+    summaryImage: `${ASSET_BASE_URL}/summaries/Leah-summary.png`,
+    schedule: [{ start: '06:00', end: '07:00' }],
+  },
+  {
+    id: 'shibo',
+    name: 'Shibo',
+    xHandle: '@godsburnt',
+    xUrl: 'https://x.com/godsburnt',
+    type: 'bic',
+    row: 'day',
+    image: `${ASSET_BASE_URL}/bics/Shibo.png`,
+    summaryImage: `${ASSET_BASE_URL}/summaries/Shibo-summary.png`,
+    schedule: [{ start: '10:00', end: '12:00' }],
+  },
+  {
+    id: 'paws',
+    name: 'Paws',
+    xHandle: '@pawsmeta',
+    xUrl: 'https://x.com/pawsmeta',
+    type: 'bic',
+    row: 'day',
+    image: `${ASSET_BASE_URL}/bics/Paws.png`,
+    summaryImage: `${ASSET_BASE_URL}/summaries/Paws-summary.png`,
+    schedule: [{ start: '13:00', end: '15:00' }],
+  },
+  {
+    id: 'shield',
+    name: 'Shield',
+    xHandle: '@shieldmetax',
+    xUrl: 'https://x.com/shieldmetax',
+    type: 'bic',
+    row: 'day',
+    image: `${ASSET_BASE_URL}/bics/Shield.png`,
+    summaryImage: `${ASSET_BASE_URL}/summaries/Shield-summary.png`,
+    schedule: [{ start: '14:00', end: '15:00' }],
+  },
+  {
+    id: 'anthem',
+    name: 'Anthem',
+    xHandle: '@anthemhayek',
+    xUrl: 'https://x.com/anthemhayek',
+    type: 'bic',
+    row: 'day',
+    image: `${ASSET_BASE_URL}/bics/Anthem.png`,
+    summaryImage: `${ASSET_BASE_URL}/summaries/Anthem-summary.png`,
+    schedule: [{ start: '15:00', end: '16:00' }],
+  },
+  {
+    id: 'bark',
+    name: 'Bark',
+    xHandle: '@barkmeta',
+    xUrl: 'https://x.com/barkmeta',
+    type: 'bic',
+    row: 'day',
+    image: `${ASSET_BASE_URL}/bics/Bark.png`,
+    summaryImage: `${ASSET_BASE_URL}/summaries/Bark-summary.png`,
+    schedule: [{ start: '17:00', end: '19:00' }],
+  },
+
+  // ZIPPO row: 7pm, 8pm, 9pm
+  {
+    id: 'vibes',
+    name: 'Vibes',
+    xHandle: '@vibesmetax',
+    xUrl: 'https://x.com/vibesmetax',
+    type: 'zippo',
+    row: 'zippo',
+    zippoClosed: `${ASSET_BASE_URL}/zippos/Vibes-closed.png`,
+    zippoOpen: `${ASSET_BASE_URL}/zippos/Vibes-open.png`,
+    summaryImage: `${ASSET_BASE_URL}/summaries/Vibes-summary.png`,
+    schedule: [{ start: '19:00', end: '20:00' }],
+  },
+  {
+    id: 'wooki',
+    name: 'Wooki',
+    xHandle: '@wookimeta',
+    xUrl: 'https://x.com/wookimeta',
+    type: 'zippo',
+    row: 'zippo',
+    zippoClosed: `${ASSET_BASE_URL}/zippos/Wooki-closed.png`,
+    zippoOpen: `${ASSET_BASE_URL}/zippos/Wooki-open.png`,
+    summaryImage: `${ASSET_BASE_URL}/summaries/Wooki-summary.png`,
+    schedule: [{ start: '20:00', end: '21:00' }],
+  },
+  {
+    id: 'gator',
+    name: 'Gator',
+    xHandle: '@gatormetax',
+    xUrl: 'https://x.com/gatormetax',
+    type: 'zippo',
+    row: 'zippo',
+    zippoClosed: `${ASSET_BASE_URL}/zippos/Gator-closed.png`,
+    zippoOpen: `${ASSET_BASE_URL}/zippos/Gator-open.png`,
+    summaryImage: `${ASSET_BASE_URL}/summaries/Gator-summary.png`,
+    schedule: [{ start: '21:00', end: '22:00' }],
+  },
+
+  // Night row: 22:00–06:00
+  {
+    id: 'sauce',
+    name: 'Sauce',
+    xHandle: '@crypto_sauce',
+    xUrl: 'https://x.com/crypto_sauce',
+    type: 'bic',
+    row: 'night',
+    image: `${ASSET_BASE_URL}/bics/Sauce.png`,
+    summaryImage: `${ASSET_BASE_URL}/summaries/Sauce-summary.png`,
+    schedule: [{ start: '22:00', end: '23:00' }],
+  },
+  {
+    id: 'dream',
+    name: 'Dream',
+    xHandle: '@dreammetax',
+    xUrl: 'https://x.com/dreammetax',
+    type: 'bic',
+    row: 'night',
+    image: `${ASSET_BASE_URL}/bics/Dream.png`,
+    summaryImage: `${ASSET_BASE_URL}/summaries/Dream-summary.png`,
+    // crosses midnight
+    schedule: [
+      { start: '23:00', end: '24:00' },
+      { start: '00:00', end: '00:30' },
+    ],
+  },
+  {
+    id: 'grow',
+    name: 'Grow',
+    xHandle: '@growxmeta',
+    xUrl: 'https://x.com/growxmeta',
+    type: 'bic',
+    row: 'night',
+    image: `${ASSET_BASE_URL}/bics/Grow.png`,
+    summaryImage: `${ASSET_BASE_URL}/summaries/Grow-summary.png`,
+    schedule: [{ start: '00:00', end: '01:00' }],
+  },
+  {
+    id: 'neuro',
+    name: 'Neuro',
+    xHandle: '@neurometax',
+    xUrl: 'https://x.com/neurometax',
+    type: 'bic',
+    row: 'night',
+    image: `${ASSET_BASE_URL}/bics/Neuro.png`,
+    summaryImage: `${ASSET_BASE_URL}/summaries/Neuro-summary.png`,
+    schedule: [{ start: '01:00', end: '02:00' }],
+  },
+  {
+    id: 'artsy',
+    name: 'Artsy',
+    xHandle: '@artsymeta',
+    xUrl: 'https://x.com/artsymeta',
+    type: 'bic',
+    row: 'night',
+    image: `${ASSET_BASE_URL}/bics/Artsy.png`,
+    summaryImage: `${ASSET_BASE_URL}/summaries/Artsy-summary.png`,
+    schedule: [{ start: '02:00', end: '03:00' }],
+  },
+  {
+    id: 'truck',
+    name: 'Truck',
+    xHandle: '@truckmeta',
+    xUrl: 'https://x.com/truckmeta',
+    type: 'bic',
+    row: 'night',
+    image: `${ASSET_BASE_URL}/bics/Truck.png`,
+    summaryImage: `${ASSET_BASE_URL}/summaries/Truck-summary.png`,
+    schedule: [{ start: '03:00', end: '04:00' }],
+  },
+];
