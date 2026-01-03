@@ -1,5 +1,5 @@
 // main.js
-import { ASSET_BASE_URL, BACKGROUND_IMAGE, FLAMES, TIMEZONE, HOSTS } from './config.js';
+import { ASSET_BASE_URL, BACKGROUND_IMAGE, TIMEZONE, HOSTS } from './config.js';
 
 /**
  * Parse "HH:MM" into minutes since midnight.
@@ -51,15 +51,7 @@ function getZippoImageForHost(host, isLiveNow) {
 }
 
 /**
- * Get the best flame source URL for a given lighter type.
- */
-function getFlameSourceForType(type) {
-  const set = type === 'zippo' ? FLAMES.zippo : FLAMES.bic;
-  return set.primary || set.fallback || set.hevc || '';
-}
-
-/**
- * Create a lighter DOM element (container with video + img).
+ * Create a lighter DOM element (container with CSS flame + img).
  */
 function createLighterElement(host, minutesNow) {
   const liveNow = isHostLive(host, minutesNow);
@@ -67,17 +59,13 @@ function createLighterElement(host, minutesNow) {
   container.className = 'lighter';
   container.dataset.hostId = host.id;
 
-  // Flame video (behind image)
-  const flameSrc = liveNow ? getFlameSourceForType(host.type) : null;
-  if (flameSrc) {
-    const flame = document.createElement('video');
-    flame.className = 'flame';
-    flame.src = flameSrc;
-    flame.autoplay = true;
-    flame.loop = true;
-    flame.muted = true;
-    flame.playsInline = true;
-    flame.style.zIndex = '0';
+  // Add .live class for wobble + glow
+  if (liveNow) {
+    container.classList.add('live');
+
+    // CSS flame element
+    const flame = document.createElement('div');
+    flame.className = 'css-flame';
     container.appendChild(flame);
   }
 
@@ -86,11 +74,10 @@ function createLighterElement(host, minutesNow) {
   img.className = 'lighter-image';
   img.alt = host.name;
   img.loading = 'lazy';
-  if (host.type === 'zippo') {
-    img.src = getZippoImageForHost(host, liveNow);
-  } else {
-    img.src = host.image;
-  }
+  img.src = host.type === 'zippo'
+    ? getZippoImageForHost(host, liveNow)
+    : host.image;
+
   container.appendChild(img);
 
   // Click to open summary popup
@@ -133,8 +120,6 @@ function renderRows() {
 
 /**
  * Show summary popup for a host.
- * Popup always stays in viewport; clicking inside opens X link.
- * Clicking outside closes.
  */
 function showSummaryPopup(host) {
   const overlay = document.getElementById('summary-overlay');
@@ -173,7 +158,7 @@ function initBackground() {
   let mouseY = 0;
 
   function updateParallax() {
-    const scrollOffset = scrollY * -0.05; // subtle vertical parallax
+    const scrollOffset = scrollY * -0.05;
     const mouseOffsetX = (mouseX - window.innerWidth / 2) * 0.01;
     const mouseOffsetY = (mouseY - window.innerHeight / 2) * 0.01;
     bg.style.transform = `translate3d(${mouseOffsetX}px, ${scrollOffset + mouseOffsetY}px, 0)`;
@@ -197,9 +182,7 @@ function initBackground() {
  * Re-render lighters periodically to update live state & zippo images.
  */
 function startScheduleRefresh() {
-  // Initial render
   renderRows();
-  // Refresh every 60 seconds
   setInterval(renderRows, 60 * 1000);
 }
 
@@ -212,3 +195,81 @@ function init() {
 }
 
 document.addEventListener('DOMContentLoaded', init);
+
+// --------------------------------------------------
+// WIND-REACTIVE FLAME: inertia + gust + auto wind
+// --------------------------------------------------
+(() => {
+  const state = {
+    currentWind: 0,      // what the CSS currently sees
+    targetWind: 0,       // where we want to move toward
+    lastMouseX: null,
+    lastTime: null,
+    lastMoveTime: 0,
+  };
+
+  // Mouse moves influence the target wind (gusts + direction)
+  document.addEventListener('mousemove', (e) => {
+    const now = performance.now();
+    const x = e.clientX;
+
+    // Base lean from horizontal position: -3deg (left) to +3deg (right)
+    const base = (x / window.innerWidth - 0.5) * 6;
+
+    // Compute horizontal speed for gusts
+    if (state.lastMouseX !== null && state.lastTime !== null) {
+      const dx = x - state.lastMouseX;
+      const dt = now - state.lastTime;
+      const speed = Math.abs(dx) / Math.max(dt, 1); // px per ms
+
+      // Gust strength: map speed into a small extra lean
+      let gust = speed * 0.04;  // tune factor here
+      if (gust > 4) gust = 4;   // clamp gust magnitude
+
+      // Direction of gust matches direction of movement
+      gust *= Math.sign(dx || 1);
+
+      state.targetWind = base + gust;
+    } else {
+      state.targetWind = base;
+    }
+
+    state.lastMouseX = x;
+    state.lastTime = now;
+    state.lastMoveTime = now;
+  });
+
+  function updateWind() {
+    const now = performance.now();
+
+    // Autonomous wind: layered sines for natural sway
+    const t = now * 0.0004;
+    const auto =
+      Math.sin(t) * 1.5 +
+      Math.sin(t * 0.37) * 0.7;
+
+    // If no mouse movement for a while, let target drift back toward 0
+    const timeSinceMove = now - state.lastMoveTime;
+    if (timeSinceMove > 1200) {
+      state.targetWind *= 0.96; // gentle decay toward 0
+    }
+
+    // Desired wind = auto sway + user-modulated lean
+    const desired = auto + state.targetWind;
+
+    // Inertia: smooth interpolation toward desired
+    const lerpFactor = 0.08; // smaller = smoother, larger = snappier
+    state.currentWind =
+      state.currentWind + (desired - state.currentWind) * lerpFactor;
+
+    // Apply to CSS variable
+    document.documentElement.style.setProperty(
+      '--wind',
+      `${state.currentWind}deg`
+    );
+
+    requestAnimationFrame(updateWind);
+  }
+
+  requestAnimationFrame(updateWind);
+})();

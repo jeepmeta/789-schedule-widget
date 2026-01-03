@@ -101,7 +101,7 @@ export const HOSTS = [
     row: 'day',
     image: `${ASSET_BASE_URL}/bics/Bark.png`,
     summaryImage: `${ASSET_BASE_URL}/summaries/Bark-summary.png`,
-    schedule: [{ start: '17:00', end: '19:00' }],
+    schedule: [{ start: '16:00', end: '19:00' }],
   },
 
   // ZIPPO row: 7pm, 8pm, 9pm
@@ -115,7 +115,7 @@ export const HOSTS = [
     zippoClosed: `${ASSET_BASE_URL}/zippos/Vibes-closed.png`,
     zippoOpen: `${ASSET_BASE_URL}/zippos/Vibes-open.png`,
     summaryImage: `${ASSET_BASE_URL}/summaries/Vibes-summary.png`,
-    schedule: [{ start: '19:00', end: '20:00' }],
+    schedule: [{ start: '16:00', end: '20:00' }],
   },
   {
     id: 'wooki',

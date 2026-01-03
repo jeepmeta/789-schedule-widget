@@ -1,4 +1,3 @@
-/* Global reset */
 *,
 *::before,
 *::after {
@@ -17,7 +16,10 @@ body {
   color: #fff;
 }
 
-/* Background with parallax */
+body {
+  overflow-y: clip;
+}
+
 #background {
   position: fixed;
   inset: 0;
@@ -26,9 +28,9 @@ body {
   background-repeat: no-repeat;
   will-change: transform;
   z-index: 0;
+  opacity: 0.2;
 }
 
-/* Main layout */
 #schedule-root {
   position: relative;
   z-index: 1;
@@ -36,27 +38,19 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-
-  /* ADJUST ROW SPACING HERE */
   gap: 3vh;
-
   padding: 5vh 4vw;
 }
 
-/* Rows of lighters */
 .lighter-row {
   display: flex;
   flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
-
-  /* ADJUST HORIZONTAL SPACING HERE */
   gap: 2vw;
-
   pointer-events: auto;
 }
 
-/* Default lighter size (BICs) */
 .lighter {
   position: relative;
   width: 96px;
@@ -66,69 +60,30 @@ body {
   transform-origin: center bottom;
 }
 
-/* Hover lift */
 .lighter:hover {
   transform: translateY(-6px);
   filter: brightness(1.1);
 }
 
-/* ZIPPO row override — 1080×1080 square scaling */
 #lighter-row-zippo .lighter {
-  width: 240px;     /* adjust freely */
-  height: 240px;    /* perfect square */
+  width: 240px;
+  height: 240px;
 }
 
-/* ZIPPO row left/right positioning */
 #lighter-row-zippo {
-  /* adjust this to shift the entire row */
   transform: translateX(-56px);
 }
 
-/* Ensure flame + image scale with ZIPPO size */
-#lighter-row-zippo .lighter video.flame,
-#lighter-row-zippo .lighter img.lighter-image {
-  width: 100%;
-  height: 100%;
-}
-
-/* Flame video behind lighter image */
-.lighter video.flame {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  z-index: 0;
-  pointer-events: none;
-}
-
-/* Lighter image on top */
 .lighter img.lighter-image {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: contain;
-  z-index: 1;
+  z-index: 2;
   pointer-events: none;
 }
 
-/* LIVE STATE — wobble + glow */
-.lighter.live {
-  animation: lighter-wobble 3s ease-in-out infinite;
-  filter: drop-shadow(0 0 6px rgba(255, 200, 120, 0.45));
-}
-
-/* Subtle wobble animation */
-@keyframes lighter-wobble {
-  0%   { transform: translateY(0) rotate(0deg); }
-  25%  { transform: translateY(-1px) rotate(0.4deg); }
-  50%  { transform: translateY(0) rotate(0deg); }
-  75%  { transform: translateY(-1px) rotate(-0.4deg); }
-  100% { transform: translateY(0) rotate(0deg); }
-}
-
-/* Summary popup overlay */
 .summary-overlay {
   position: fixed;
   inset: 0;
@@ -141,13 +96,11 @@ body {
   transition: opacity 0.35s ease;
 }
 
-/* Hidden state */
 .hidden {
   opacity: 0;
   pointer-events: none;
 }
 
-/* Popup itself */
 .summary-popup {
   position: relative;
   max-width: 80vw;
@@ -163,13 +116,11 @@ body {
   transform: scale(0.95);
 }
 
-/* Visible popup state */
 .summary-overlay:not(.hidden) .summary-popup {
   opacity: 1;
   transform: scale(1);
 }
 
-/* Mobile adjustments */
 @media (max-width: 600px) {
   .lighter {
     width: 72px;
@@ -190,4 +141,181 @@ body {
     gap: 2.5vh;
     padding: 4vh 2vw;
   }
+}
+
+/* -------------------------------------------------- */
+/* FLAME ENGINE (PLACED AT BOTTOM)                    */
+/* -------------------------------------------------- */
+
+.css-flame {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 1;
+  mix-blend-mode: screen;
+  animation: heat-haze 1.4s infinite ease-in-out;
+}
+
+.lighter.live .css-flame {
+  left: 37%;
+  top: 1%;
+  width: 40%;
+  height: 40%;
+}
+
+.lighter.live .css-flame::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+ clip-path: polygon(
+  50% 100%,
+  58% 90%,
+  70% 72%,
+  64% 52%,
+  56% 32%,
+  50% 14%,
+  44% 32%,
+  36% 52%,
+  30% 72%,
+  42% 90%
+);
+  background:
+    radial-gradient(circle at 50% 86%, rgba(60,120,255,1), transparent 52%),
+    radial-gradient(circle at 50% 50%, rgba(255,150,40,0.95), transparent 50%),
+    radial-gradient(circle at 50% 28%, rgba(255,220,120,1), transparent 45%),
+    radial-gradient(circle at 50% 12%, rgba(255,255,255,0.95), transparent 40%);
+  filter: blur(12px);
+  border-radius: 50%;
+  animation:
+    flame-flicker-chaos 0.28s infinite ease-in-out,
+    flame-bend-wind .32s infinite ease-in-out;
+}
+
+#lighter-row-zippo .lighter.live .css-flame {
+  top: 38%;
+  width: 48%;
+  height: 75%;
+}
+
+#lighter-row-zippo .lighter.live .css-flame::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(
+    50% 0%,
+    56% 8%,
+    66% 22%,
+    70% 40%,
+    64% 62%,
+    56% 80%,
+    50% 92%,
+    44% 80%,
+    36% 62%,
+    30% 40%,
+    34% 22%,
+    44% 8%
+  );
+  background:
+    radial-gradient(circle at 50% 86%, rgba(255,210,80,1), transparent 52%),
+    radial-gradient(circle at 50% 50%, rgba(255,170,60,1), transparent 50%),
+    radial-gradient(circle at 50% 28%, rgba(255,240,180,1), transparent 45%),
+    radial-gradient(circle at 50% 12%, rgba(255,255,255,1), transparent 30%);
+  filter: blur(12px);
+  border-radius: 50%;
+  animation:
+    flame-flicker-chaos 0.18s infinite ease-in-out,
+    flame-bend-wind 1.4s infinite ease-in-out;
+}
+
+.css-flame::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -8%;
+  width: 22%;
+  height: 22%;
+  transform: translateX(-50%);
+  background: radial-gradient(circle, rgba(255,255,255,0.9), transparent 20%);
+  border-radius: 50%;
+  opacity: 0.2;
+  filter: blur(8px);
+}
+
+.css-flame .ember {
+  position: absolute;
+  left: 50%;
+  width: 3px;
+  height: 3px;
+  background: radial-gradient(circle, rgba(255,200,120,1), transparent);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: ember-rise 0.8s ease-out forwards;
+}
+
+@keyframes ember-rise {
+  0% { transform: translate(-50%, 0) scale(1); opacity: 1; }
+  100% { transform: translate(-50%, -40px) scale(0.2); opacity: 0; }
+}
+
+.lighter.live .css-flame.flash::before {
+  animation: ignition-flash 0.18s ease-out forwards;
+}
+
+@keyframes ignition-flash {
+  0% { filter: brightness(2); transform: scale(1.2); }
+  100% { filter: brightness(1); transform: scale(1); }
+}
+
+.css-flame .spark {
+  position: absolute;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  background: radial-gradient(circle, rgba(255,220,150,1), transparent);
+  border-radius: 50%;
+  animation: spark-rise 0.4s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes spark-rise {
+  0% { transform: translate(-50%, 0) scale(1); opacity: 1; }
+  100% { transform: translate(-50%, -20px) scale(0.2); opacity: 0; }
+}
+
+.css-flame.double::before {
+  animation: flame-double 0.12s ease-in-out;
+}
+
+@keyframes flame-double {
+  0% { transform: scaleY(1); }
+  50% { transform: scaleY(1.3); }
+  100% { transform: scaleY(1); }
+}
+
+.lighter.live .lighter-image {
+  filter: drop-shadow(0 -6px 12px rgba(255,200,120,0.35));
+}
+
+@keyframes flame-flicker-chaos {
+  0% { transform: scaleY(1) translateX(0); opacity: 0.72; }
+  10% { transform: scaleY(1.08) translateX(-1px); opacity: 0.86; }
+  22% { transform: scaleY(0.96) translateX(1px); opacity: 0.75; }
+  35% { transform: scaleY(1.04) translateX(-0.5px); opacity: 0.67; }
+  47% { transform: scaleY(0.98) translateX(0.8px); opacity: 0.81; }
+  63% { transform: scaleY(1.06) translateX(-1.2px); opacity: 0.7; }
+  78% { transform: scaleY(0.94) translateX(0.4px); opacity: 0.82; }
+  100% { transform: scaleY(1) translateX(0); opacity: 0.92; }
+}
+
+@keyframes flame-bend-wind {
+  0% { transform: skewX(calc(var(--wind, 0deg) * 0.6)); }
+  50% { transform: skewX(calc(var(--wind, 0deg) * 1.1)); }
+  100% { transform: skewX(calc(var(--wind, 0deg) * 0.6)); }
+}
+
+@keyframes heat-haze {
+  0% { filter: blur(1px) brightness(1) saturate(1); }
+  50% { filter: blur(1.4px) brightness(1.08) saturate(1.1); }
+  100% { filter: blur(1px) brightness(1) saturate(1); }
 }
