@@ -1,6 +1,8 @@
 :root{
   --stage-size: 3375px;
   --stage-scale: 0.8;
+  --stage-render-width: calc(var(--stage-size) * var(--stage-scale));
+  --founders-offset-pct: 3%;
   --bic-height: 360px;
   --zippo-height: 300px;
   --gap-x: 8px;
@@ -12,23 +14,26 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:#000;color:#fff;font-family:Inter,system-ui,Arial,Helvetica,sans-serif;display:flex;align-items:flex-start;justify-content:center;padding:24px}
 
-/* Stage and background */
+/* Stage and background - responsive */
 .stage{
-  width: calc(var(--stage-size) * var(--stage-scale));
-  height: calc(var(--stage-size) * var(--stage-scale));
+  width: min(var(--stage-render-width), 100%);
+  --scale-factor: calc(var(--stage-render-width) / var(--stage-size));
+  height: calc(var(--stage-size) * (min(var(--stage-render-width), 100%) / var(--stage-size)));
   position: relative;
   overflow: hidden;
   transform-origin: top center;
   background: transparent;
-  border-radius: 0;
 }
+
+/* Parallax background tuned to avoid cropping and allow movement */
 .parallax-bg{
   position: absolute;
   inset: 0;
-  background-size: cover;
-  background-position: center;
+  background-size: calc(100% + 8vw) calc(100% + 8vh);
+  background-position: center center;
   z-index: 0;
   will-change: transform;
+  transition: transform 220ms cubic-bezier(.22,.9,.35,1);
 }
 
 /* Rows container */
@@ -41,7 +46,8 @@ body{background:#000;color:#fff;font-family:Inter,system-ui,Arial,Helvetica,sans
   align-items: center;
   justify-content: flex-start;
   height: 100%;
-  padding: var(--stage-padding);
+  padding: calc(var(--stage-padding) + 12px);
+  box-sizing: border-box;
 }
 
 /* Each row is a horizontal flex strip */
@@ -54,6 +60,12 @@ body{background:#000;color:#fff;font-family:Inter,system-ui,Arial,Helvetica,sans
   overflow: visible;
 }
 
+/* Founders row offset: use percentage so it scales with stage width */
+.row-founders{
+  justify-content: flex-start;
+  padding-left: var(--founders-offset-pct);
+}
+
 /* Card wrapper that holds video behind image */
 .card{
   position: relative;
@@ -62,10 +74,10 @@ body{background:#000;color:#fff;font-family:Inter,system-ui,Arial,Helvetica,sans
   user-select: none;
 }
 
-/* Image sizing rules */
+/* Image sizing rules - scale by computed scale factor */
 .card img {
   display: block;
-  height: var(--card-height, var(--bic-height));
+  height: calc(var(--card-height, var(--bic-height)) * var(--scale-factor));
   width: auto;
   max-width: none;
   image-rendering: auto;
@@ -80,27 +92,55 @@ body{background:#000;color:#fff;font-family:Inter,system-ui,Arial,Helvetica,sans
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  height: 100%;
+  height: calc(var(--card-height, var(--bic-height)) * var(--scale-factor));
   width: auto;
   object-fit: contain;
   z-index: 0;
   pointer-events: none;
 }
 
-/* Popups (ticket summaries) */
+/* Popups container */
+#popups{
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Popup styling and transitions */
 #popups .popup {
   position: absolute;
-  z-index: 10;
   pointer-events: auto;
+  z-index: 11;
   transform-origin: top left;
-  background: transparent;
+  background: rgba(0,0,0,0.06);
+  border-radius: 8px;
+  overflow: visible;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.45);
+  backdrop-filter: blur(6px) saturate(1.05);
+  -webkit-backdrop-filter: blur(6px) saturate(1.05);
+  padding: 8px;
+  transition: opacity 180ms ease, transform 220ms cubic-bezier(.22,.9,.35,1);
+  opacity: 0;
+  transform: translateY(8px) scale(0.98);
+}
+
+#popups .popup img {
+  display: block;
+  max-width: 640px;
+  width: auto;
+  height: auto;
+  border-radius: 6px;
+  pointer-events: none;
+  user-select: none;
 }
 
 /* Responsive tweaks */
 @media (max-width: 1400px){
-  :root{ --stage-scale: 0.6; --bic-height: 300px; --zippo-height: 260px; }
+  :root{ --stage-scale: 0.6; --founders-offset-pct: 2.5%; }
 }
 @media (max-width: 900px){
-  :root{ --stage-scale: 0.45; --bic-height: 220px; --zippo-height: 180px; }
+  :root{ --stage-scale: 0.45; --founders-offset-pct: 1.5%; }
   .rows{ padding: 18px; }
+  #popups .popup { max-width: 80%; }
 }
